@@ -1,109 +1,159 @@
-import { StyleSheet, Image, Platform } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Text, FlatList } from 'react-native';
+import { GradientBackground } from '@/components/ui/GradientBackground';
+import { GlassmorphicCard } from '@/components/ui/GlassmorphicCard';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+// Sample history data
+const historyData = [
+  {
+    id: '1',
+    fileName: 'ExamResults_Spring2023.pdf',
+    date: '2023-05-15',
+    type: 'pdf',
+    status: 'completed',
+  },
+  {
+    id: '2',
+    fileName: 'StudentMarks_Fall2023.pdf',
+    date: '2023-12-10',
+    type: 'pdf',
+    status: 'completed',
+  },
+  {
+    id: '3',
+    fileName: 'ScanDoc_20240125.jpg',
+    date: '2024-01-25',
+    type: 'image',
+    status: 'completed',
+  },
+];
 
-export default function TabTwoScreen() {
+export default function HistoryScreen() {
+  const renderHistoryItem = ({ item }: { item: typeof historyData[0] }) => {
+    return (
+      <GlassmorphicCard style={styles.historyCard} onPress={() => alert(`Viewing ${item.fileName}`)}>
+        <View style={styles.historyItemContainer}>
+          <View style={styles.iconContainer}>
+            {item.type === 'pdf' ? (
+              <MaterialCommunityIcons name="file-pdf-box" size={40} color="#4cc9f0" />
+            ) : (
+              <MaterialCommunityIcons name="file-image" size={40} color="#4cc9f0" />
+            )}
+          </View>
+          
+          <View style={styles.contentContainer}>
+            <Text style={styles.fileName}>{item.fileName}</Text>
+            <Text style={styles.fileDate}>Converted on {item.date}</Text>
+            <View style={styles.statusContainer}>
+              <MaterialCommunityIcons 
+                name="check-circle" 
+                size={16} 
+                color="#4caf50" 
+                style={styles.statusIcon} 
+              />
+              <Text style={styles.statusText}>Converted</Text>
+            </View>
+          </View>
+          
+          <MaterialCommunityIcons name="chevron-right" size={24} color="#e0e0e0" />
+        </View>
+      </GlassmorphicCard>
+    );
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Explore</ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image source={require('@/assets/images/react-logo.png')} style={{ alignSelf: 'center' }} />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Custom fonts">
-        <ThemedText>
-          Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-          <ThemedText style={{ fontFamily: 'SpaceMono' }}>
-            custom fonts such as this one.
-          </ThemedText>
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user's current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+    <GradientBackground>
+      <View style={styles.container}>
+        <Text style={styles.title}>Conversion History</Text>
+        
+        {historyData.length > 0 ? (
+          <FlatList
+            data={historyData}
+            renderItem={renderHistoryItem}
+            keyExtractor={item => item.id}
+            contentContainerStyle={styles.listContainer}
+          />
+        ) : (
+          <GlassmorphicCard style={styles.emptyCard}>
+            <MaterialCommunityIcons name="history" size={50} color="#4cc9f0" />
+            <Text style={styles.emptyText}>No conversion history yet</Text>
+            <Text style={styles.emptySubtext}>
+              Your converted documents will appear here
+            </Text>
+          </GlassmorphicCard>
+        )}
+      </View>
+    </GradientBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  container: {
+    flex: 1,
+    padding: 16,
   },
-  titleContainer: {
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    marginVertical: 16,
+  },
+  listContainer: {
+    paddingBottom: 20,
+  },
+  historyCard: {
+    marginBottom: 12,
+  },
+  historyItemContainer: {
     flexDirection: 'row',
-    gap: 8,
+    alignItems: 'center',
+    padding: 8,
+  },
+  iconContainer: {
+    marginRight: 16,
+  },
+  contentContainer: {
+    flex: 1,
+  },
+  fileName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    marginBottom: 4,
+  },
+  fileDate: {
+    fontSize: 14,
+    color: '#e0e0e0',
+    marginBottom: 6,
+  },
+  statusContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  statusIcon: {
+    marginRight: 4,
+  },
+  statusText: {
+    fontSize: 14,
+    color: '#4caf50',
+  },
+  emptyCard: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 40,
+    marginTop: 50,
+  },
+  emptyText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    marginTop: 16,
+  },
+  emptySubtext: {
+    fontSize: 14,
+    color: '#e0e0e0',
+    marginTop: 8,
+    textAlign: 'center',
   },
 });

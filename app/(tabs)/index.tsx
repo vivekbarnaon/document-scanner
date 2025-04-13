@@ -1,74 +1,224 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, ScrollView, Text } from 'react-native';
+import { useRouter } from 'expo-router';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { GradientBackground } from '@/components/ui/GradientBackground';
+import { GlassmorphicCard } from '@/components/ui/GlassmorphicCard';
+import { GradientButton } from '@/components/ui/GradientButton';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function HomeScreen() {
+  const router = useRouter();
+  
+  const handleGetStarted = () => {
+    router.push('/(auth)/login');
+  };
+  
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <GradientBackground>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={styles.headerContainer}>
+          <View style={styles.titleContainer}>
+            <Text style={[styles.appTitle, {color: '#56CCF2'}]}>Document </Text>
+            <Text style={[styles.appTitle, {color: '#B76EFF'}]}>Scanner</Text>
+          </View>
+          <MaterialCommunityIcons name="file-document-outline" size={80} color="#56CCF2" style={styles.appIcon} />
+        </View>
+        
+        <GlassmorphicCard style={styles.welcomeCard}>
+          <View style={{width: '100%', alignItems: 'center', justifyContent: 'center'}}>
+            <ThemedText 
+              style={styles.title}
+              lightColor={'#ffffff'}
+              darkColor={'#ffffff'}
+              type="title">
+              Welcome!
+            </ThemedText>
+          </View>
+          
+          <ThemedText 
+            style={styles.subtitle}
+            lightColor={'#e0e0e0'}
+            darkColor={'#e0e0e0'}>
+            Your document scanner powered by AI
+          </ThemedText>
+
+          <GradientButton
+            title="Get Started"
+            onPress={handleGetStarted}
+            style={styles.getStartedButton}
+          />
+        </GlassmorphicCard>
+        
+        <Text style={styles.featuresTitle}>Key Features</Text>
+        
+        <GlassmorphicCard style={styles.card}>
+          <View style={styles.featureRow}>
+            <MaterialCommunityIcons name="file-document-outline" size={24} color="#4cc9f0" />
+            <View style={styles.featureTextContainer}>
+              <ThemedText 
+                type="subtitle"
+                style={styles.cardTitle}
+                lightColor={'#ffffff'}
+                darkColor={'#ffffff'}>
+                Scan Documents
+              </ThemedText>
+              
+              <ThemedText
+                lightColor={'#e0e0e0'}
+                darkColor={'#e0e0e0'}
+                style={styles.cardText}>
+                Scan images or PDFs and extract structured data with high accuracy
+              </ThemedText>
+            </View>
+          </View>
+        </GlassmorphicCard>
+
+        <GlassmorphicCard style={styles.card}>
+          <View style={styles.featureRow}>
+            <MaterialCommunityIcons name="table" size={24} color="#4cc9f0" />
+            <View style={styles.featureTextContainer}>
+              <ThemedText 
+                type="subtitle"
+                style={styles.cardTitle}
+                lightColor={'#ffffff'}
+                darkColor={'#ffffff'}>
+                Generate Tables
+              </ThemedText>
+              
+              <ThemedText
+                lightColor={'#e0e0e0'}
+                darkColor={'#e0e0e0'}
+                style={styles.cardText}>
+                Automated semester-wise student marks table generation for exam departments
+              </ThemedText>
+            </View>
+          </View>
+        </GlassmorphicCard>
+
+        <GlassmorphicCard style={styles.card}>
+          <View style={styles.featureRow}>
+            <MaterialCommunityIcons name="file-export-outline" size={24} color="#4cc9f0" />
+            <View style={styles.featureTextContainer}>
+              <ThemedText 
+                type="subtitle"
+                style={styles.cardTitle}
+                lightColor={'#ffffff'}
+                darkColor={'#ffffff'}>
+                Export to CSV
+              </ThemedText>
+              
+              <ThemedText
+                lightColor={'#e0e0e0'}
+                darkColor={'#e0e0e0'}
+                style={styles.cardText}>
+                Convert extracted data into well-formatted CSV files for easy management
+              </ThemedText>
+            </View>
+          </View>
+        </GlassmorphicCard>
+
+        <GlassmorphicCard style={styles.card}>
+          <View style={styles.featureRow}>
+            <MaterialCommunityIcons name="history" size={24} color="#4cc9f0" />
+            <View style={styles.featureTextContainer}>
+              <ThemedText 
+                type="subtitle"
+                style={styles.cardTitle}
+                lightColor={'#ffffff'}
+                darkColor={'#ffffff'}>
+                Smart Reusability
+              </ThemedText>
+              
+              <ThemedText
+                lightColor={'#e0e0e0'}
+                darkColor={'#e0e0e0'}
+                style={styles.cardText}>
+                Reuse previously converted CSVs if similar document data is detected
+              </ThemedText>
+            </View>
+          </View>
+        </GlassmorphicCard>
+      </ScrollView>
+    </GradientBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  scrollContent: {
+    flexGrow: 1,
+    padding: 16,
+  },
+  headerContainer: {
+    height: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+    flexDirection: 'column',
+  },
   titleContainer: {
     flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 12,
+  },
+  appTitle: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    textShadowColor: 'rgba(86, 204, 242, 0.6)',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 8,
+  },
+  appIcon: {
+    marginBottom: 12,
+  },
+  welcomeCard: {
+    marginBottom: 16,
     alignItems: 'center',
-    gap: 8,
   },
-  stepContainer: {
-    gap: 8,
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    textAlign: 'center',
+  },
+  featuresTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    marginTop: 16,
     marginBottom: 8,
+    marginLeft: 4,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  subtitle: {
+    fontSize: 18,
+    color: '#e0e0e0',
+    marginTop: 8,
+    marginBottom: 16,
+  },
+  getStartedButton: {
+    marginTop: 8,
+  },
+  card: {
+    marginBottom: 16,
+  },
+  featureRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 16,
+  },
+  featureTextContainer: {
+    flex: 1,
+  },
+  cardTitle: {
+    marginBottom: 8,
+    color: '#ffffff',
+  },
+  cardText: {
+    marginBottom: 16,
+    color: '#e0e0e0',
+  },
+  button: {
+    marginTop: 8,
   },
 });
